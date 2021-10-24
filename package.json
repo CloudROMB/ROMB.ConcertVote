@@ -26,6 +26,7 @@
     "randomstring": "^1.2.1",
     "roboto-fontface": "^0.10.0",
     "serve-favicon": "^2.5.0",
-    "sqlite3": "^5.0.2"
+    "sqlite3": "^5.0.2",
+    "tar": "^6.1.11"
   }
 }
