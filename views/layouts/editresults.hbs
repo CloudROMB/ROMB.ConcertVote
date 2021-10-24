@@ -1,0 +1,114 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header card-header-icon card-header-rose">
+        <div class="card-icon">
+          <i class="material-icons">list</i>
+        </div>
+        <h4 class="card-title ">Список участников</h4>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <form id="formContender" class="form" method="post" action="/contenders/changevotes"
+                enctype="application/x-www-form-urlencoded">
+            <table class="table">
+              <thead class=" text-primary">
+              <th class="invisible">
+                №
+              </th>
+              <th>
+                Имя
+              </th>
+              <th>
+                Выступление
+              </th>
+              <th>
+                Страна
+              </th>
+              <th>
+                Город
+              </th>
+              {{#nominations}}
+                <th>
+                  {{this.name}}
+                </th>
+              {{/nominations}}
+              <th>
+                Оценка
+              </th>
+              </thead>
+              <tbody>
+              {{#contendersList}}
+                <tr
+                  {{#if active}}
+                  class=""
+                  {{else}}
+                  class="disabled-contender"
+                  {{/if}}
+                  {{#if isAdmin}}
+                  style="cursor: pointer;"
+                  data-toggle="collapse" href="#collapseExample{{rowid}}" aria-expanded="false"
+                  aria-controls="collapseExample{{rowid}}"
+                  {{/if}}
+                >
+                  <td class="invisible">
+                    {{rowid}}
+                  </td>
+                  <td>
+                    {{name}}
+                  </td>
+                  <td>
+                    {{action}}
+                  </td>
+                  <td>
+                    <img id="contCountryShort" src="/assets/img/flags/{{countryshort}}.png"> {{country}}
+                  </td>
+                  <td>
+                    {{city}}
+                  </td>
+                  {{#evaluations}}
+                    <td>
+                      {{this}}
+                    </td>
+                  {{/evaluations}}
+                  <td>
+                    {{average}}
+                  </td>
+                </tr>
+                <tr class="collapse" id="collapseExample{{rowid}}">
+                  <td colspan="10" align="right" style="vertical-align: center;">
+                    <table>
+                      <tbody>
+                      {{#each juryvoices}}
+                        <tr>
+                          <td align="right" style="vertical-align: center;">
+                            {{this.name}}
+                          </td>
+                          <td style="vertical-align: center;">
+                            <div class="form-group" title="ID голоса, ID жюри, оценка">
+                              <label class="bmd-label-floating">ID</label>
+                              <input id="contRowid" type="text" class="form-control"
+                                     name="voiceid-{{this.vid}}" value="[{{this.vid}},{{this.uid}},{{this.voice}}]">
+                            </div>
+                          </td>
+                        </tr>
+                      {{/each}}
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              {{/contendersList}}
+              </tbody>
+            </table>
+
+            <div class="row" style="margin: 0;">
+              <div class="col-sm-12 text-center">
+                <button type="submit" class="btn btn-primary btn-round">Сохранить изменения</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

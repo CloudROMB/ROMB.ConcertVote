@@ -1,0 +1,107 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header card-header-icon card-header-rose">
+        <div class="card-icon">
+          <i class="material-icons">list</i>
+        </div>
+        <h4 class="card-title ">Список участников</h4>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead class=" text-primary">
+            <th class="invisible">
+              <a href="/results/rowid">№</a>
+            </th>
+            <th>
+              <a href="/results/name">Имя</a>
+            </th>
+            <th>
+              <a href="/results/action">Выступление</a>
+            </th>
+            <th>
+              <a href="/results/country">Страна</a>
+            </th>
+            <th>
+              <a href="/results/city">Город</a>
+            </th>
+            {{#nominations}}
+              <th>
+                {{this.name}}
+              </th>
+            {{/nominations}}
+            <th>
+              <a href="/results/average">Оценка (средняя)</a>
+            </th>
+            <th>
+              <a href="/results/percents">Оценка (%%)</a>
+            </th>
+            </thead>
+            <tbody>
+            {{#contendersList}}
+              <tr
+                {{#if active}}
+                class=""
+                {{else}}
+                class="disabled-contender"
+                {{/if}}
+                {{#if isAdmin}}
+                style="cursor: pointer;"
+                data-toggle="collapse" href="#collapseExample{{rowid}}" aria-expanded="false"
+                aria-controls="collapseExample{{rowid}}"
+                {{/if}}
+              >
+                <td class="invisible">
+                  {{rowid}}
+                </td>
+                <td>
+                  {{name}}
+                </td>
+                <td>
+                  {{action}}
+                </td>
+                <td>
+                  <img id="contCountryShort" src="/assets/img/flags/{{countryshort}}.png"> {{country}}
+                </td>
+                <td>
+                  {{city}}
+                </td>
+                {{#evaluations}}
+                  <td>
+                    {{this}}
+                  </td>
+                {{/evaluations}}
+                <td>
+                  {{average}}
+                </td>
+                <td>
+                  {{evaluationPercent}}
+                </td>
+              </tr>
+              <tr class="collapse" id="collapseExample{{rowid}}">
+                <td colspan="10" align="right">
+                  <table>
+                    <tbody>
+                    {{#each juryvoices}}
+                      <tr>
+                        <td align="right">
+                          {{this.name}}
+                        </td>
+                        <td>
+                          {{this.voice}}
+                        </td>
+                      </tr>
+                    {{/each}}
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            {{/contendersList}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,24 @@
+{
+  "environment": {
+    "NODE_ENV_PROD": "production",
+    "NODE_ENV_DEV": "development",
+    "MAX_UPLOAD_SIZE_BYTES": 41943040,
+    "MAX_UPLOAD_SIZE_MB": 40,
+    "MAX_UPLOAD_FILES_COUNT": 12,
+    "MAX_DOC_SIZE_BYTES": 524288,
+    "MAX_DOC_SIZE_KB": 512,
+    "upload_dir_full": "./data/files/",
+    "upload_dir": "./data/files/"
+  },
+  "lists": {
+    "recordsOnPage": 10,
+    "maxRecordsOnPage": 100,
+    "maxRecordsInRefList": 100
+  },
+  "auth": {
+    "secretKey": "ROMB-change-this"
+  },
+  "DB": {
+    "path": "./data/votes.sqlite"
+  }
+}

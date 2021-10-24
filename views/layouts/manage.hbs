@@ -1,0 +1,459 @@
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header card-header-rose card-header-text">
+        <div class="card-icon">
+          <i class="material-icons">today</i>
+        </div>
+        <h4 class="card-title">Голосование</h4>
+      </div>
+      <div class="card-body ">
+        <div class="togglebutton">
+          <label>
+            <input type="checkbox" {{#isVoteActive}}checked{{/isVoteActive}}
+                   onclick="getTogglevoteStatus(this)"
+                   name="voteStatus">
+            <span class="toggle"></span>
+            можно голосовать
+          </label>
+        </div>
+        <div class="togglebutton">
+          <label>
+            <input type="checkbox" {{#mayChangeVoices}}checked{{/mayChangeVoices}}
+                   onclick="getToggleMayChange(this)"
+                   name="mayChangeStatus">
+            <span class="toggle"></span>
+            Администратор может изменять голоса
+          </label>
+        </div>
+        <div class="togglebutton">
+          <label>
+            <input type="checkbox" {{#myVoiceVisible}}checked{{/myVoiceVisible}}
+                   onclick="getToggleMyVoiceVisible(this)"
+                   name="myVoiceVisible">
+            <span class="toggle"></span>
+            Жюри видит свои голоса
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header card-header-rose card-header-text">
+        <div class="card-icon">
+          <i class="material-icons">today</i>
+        </div>
+        <h4 class="card-title">Название конкурса</h4>
+      </div>
+      <div class="card-body text-center">
+        <form action="/manage/savecontestname" method="post">
+          <div class="form-group">
+            <label class="bmd-label-floating">Название номинации</label>
+            <input type="text" class="form-control"
+                   value="{{contestname}}" name="contestname">
+          </div>
+          <button type="submit" class="btn btn-default btn-round btn-sm" title="Сохранить">
+            <i class="fa fa-save"></i> Сохранить
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header card-header-rose card-header-text">
+        <div class="card-icon">
+          <i class="material-icons">delete</i>
+        </div>
+        <h4 class="card-title">Удалить результаты голосования</h4>
+      </div>
+      <div class="card-body ">
+        {{#if isAdmin}}
+          <a class="btn btn-link btn-danger pull-left"
+             data-toggle="modal" data-target="#deleteModal"
+          >Удалить голоса</a>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header card-header-rose card-header-text">
+        <div class="card-icon">
+          <i class="material-icons">library_books</i>
+        </div>
+        <h4 class="card-title">Номинации</h4>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-12" style="text-align: center;">
+            <a href="/manage/nomination/add" class="btn btn-primary btn-round btn-sm">
+              Добавить номинацию
+            </a>
+          </div>
+        </div>
+
+        {{#nominationsList}}
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card-container manual-flip nomination">
+                <div class="card">
+                  <div class="front nomination">
+                    <div class="header"
+                         style="background-image: url('/assets/img/rotaiting/rotating_card_thumb.jpg'); color: white;">
+                      <h4 class="text-center">{{name}}</h4>
+                    </div>
+                    <div class="content">
+                      <div class="nomination">
+                        <div class="row">
+                          <div class="col-sm-12 text-center">
+                            <div class="togglebutton">
+                              <label>
+                                <input type="checkbox" {{#if active}}checked{{/if}} disabled
+                                       name="voteStatus">
+                                <span class="toggle"></span>
+                                номинация активна
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-sm-12 text-center">
+                            {{#each evals}}
+                              <div class="form-check form-check-radio form-check-inline">
+                                <label class="form-check-label">
+                                  <input class="form-check-input" type="radio"
+                                         name="inlineRadioOptions_{{rowid}}" id="inlineRadio_{{rowid}}_{{this}}"
+                                         value="option{{this}}"> {{this}}
+                                  <span class="circle">
+                            <span class="check"></span>
+                          </span>
+                                </label>
+                              </div>
+                            {{/each}}
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                    <div class="footer justify-content-center">
+                      <button class="btn btn-secondary btn-round btn-sm" onclick="rotateCard(this)">
+                        <i class="fa fa-mail-forward"></i> Редактировать номинацию
+                      </button>
+                    </div>
+                  </div> <!-- end front panel -->
+                  <div class="back nomination">
+                    <form id="formNomination{{rowid}}" class="form" action="/manage/nomination/put/{{rowid}}"
+                          method="post">
+                      <div class="header"
+                           style="background-image: url('/assets/img/rotaiting/rotating_card_thumb.jpg'); color: white;">
+                        <h3 class="text-center">Заполните форму редактирования номинации</h3>
+                      </div>
+                      <div class="content">
+                        <div class="row">
+                          <div class="col-sm-12">
+                            <div class="form-group">
+                              <label class="bmd-label-floating">Название номинации</label>
+                              <input id="nomName" type="text" class="form-control"
+                                     value="{{name}}" name="name">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <div class="form-group">
+                              <div class="togglebutton">
+                                <label>
+                                  <input type="checkbox" {{#if active}}checked{{/if}} name="active">
+                                  <span class="toggle"></span>
+                                  включена
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-4" title="Перечислите оценки, которые можно ставить конкурсантам, через запятую в квардратных скобках">
+                            <div class="form-group">
+                              <label class="bmd-label-floating">Оценки в формате [1,2,3,4,5]</label>
+                              <input type="text" class="form-control"
+                                     value="{{evaluations}}" name="evaluations">
+                            </div>
+                          </div>
+                          <div class="col-sm-3" title="Один жюри может поставить такие оценки только одному участнику">
+                            <div class="form-group">
+                              <label class="bmd-label-floating">Уникальные голоса [1,2]</label>
+                              <input type="text" class="form-control"
+                                     value="{{uniquevoices}}" name="uniquevoices">
+                            </div>
+                          </div>
+                          <div class="col-sm-2">
+                            <div class="form-group">
+                              <label class="bmd-label-floating">ID</label>
+                              <input type="text" class="form-control" readonly
+                                     value="{{rowid}}" name="rowid">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="footer justify-content-around">
+                        <button type="button" class="btn btn-secondary btn-round btn-sm" title="Вернуться к просмотру"
+                                onclick="rotateCard(this)">
+                          <i class="fa fa-reply"></i> Вернуться к просмотру
+                        </button>
+                        <a href="/manage/nomination/delete/{{rowid}}"
+                           class="btn btn-danger btn-round btn-sm"
+                           title="Удалить номинацию">
+                          <i class="fa fa-trash"></i> Удалить номинацию</a>
+                        <button
+                            type="submit" class="btn btn-success btn-round btn-sm"
+                            title="Сохранить изменения">
+                          <i class="fa fa-save"></i> Сохранить изменения
+                        </button>
+                      </div>
+                    </form>
+                  </div> <!-- end back panel -->
+                </div>
+              </div>
+            </div>
+          </div>
+        {{/nominationsList}}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header card-header-rose card-header-text">
+        <div class="card-icon">
+          <i class="material-icons">school</i>
+        </div>
+        <h4 class="card-title">Члены жюри</h4>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-12" style="text-align: center;">
+            <a href="/users/addnew" class="btn btn-primary btn-round btn-sm">
+              Добавить нового члена жюри
+            </a>
+          </div>
+        </div>
+
+        {{#usersList}}
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card-container manual-flip users">
+                <div class="card">
+                  <div class="front users">
+                    <div class="header jury-header">
+                      <h4 class="text-center" data-background-color="rose">{{name}}</h4>
+                      <h5 class="text-center">{{position}}</h5>
+                    </div>
+                    <div class="content">
+                      <p>О себе: {{about}}</p>
+                      <p>Страна: {{country}}
+                        <span class="flag">
+                          <img id="contCountryShort" src="/assets/img/flags/{{countryshort}}.png">
+                        </span>
+                      </p>
+                      <p>Город: {{city}}</p>
+                      <p>{{photo}}</p>
+                      <p>{{deleted}}</p>
+                    </div>
+                    <div class="footer justify-content-center">
+                      <button class="btn btn-secondary btn-round btn-sm" onclick="rotateCard(this)">
+                        <i class="fa fa-mail-forward"></i> Редактировать пользователя
+                      </button>
+                    </div>
+                  </div> <!-- end front panel -->
+                  <div class="back users">
+                    <form id="formUser{{rowid}}" class="form" method="post"
+                          action="/users/put/{{rowid}}">
+                      <div class="content">
+                        <div class="row mt-2">
+                          <div class="col-sm-6">
+                            <div class="form-group">
+                              <label class="bmd-label-floating">ФИО пользователя</label>
+                              <input type="text" class="form-control"
+                                     value="{{name}}" name="name">
+                            </div>
+                          </div>
+                          <div class="col-sm-5">
+                            <div class="form-group">
+                              <label class="bmd-label-floating">Должность/звание</label>
+                              <input type="text" class="form-control"
+                                     value="{{position}}" name="position">
+                            </div>
+                          </div>
+                          <div class="col-sm-1">
+                            <div class="form-group">
+                              <label class="bmd-label-floating">ID</label>
+                              <input type="text" class="form-control" readonly
+                                     value="{{rowid}}" name="rowid">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <div class="form-group">
+                              <label class="bmd-label-floating">Логин</label>
+                              <input type="text" class="form-control"
+                                     value="{{login}}" name="login">
+                            </div>
+                          </div>
+                          <div class="col-sm-6">
+                            <div class="form-group">
+                              <label class="bmd-label-floating">Пароль</label>
+                              <input type="text" class="form-control"
+                                     value="{{pass}}" name="pass">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <div class="form-group">
+                              <label class="bmd-label-floating">Мандаты, ["jury", "admin"]</label>
+                              <input type="text" class="form-control"
+                                     value="{{credentials}}" name="credentials">
+                            </div>
+                          </div>
+                          <div class="col-sm-3">
+                            <div class="form-group">
+                              <label class="bmd-label-floating">Номинации, [3,5]</label>
+                              <input type="text" class="form-control"
+                                     value="{{nominations}}" name="nominations">
+                            </div>
+                          </div>
+                          <div class="col-sm-3">
+                            <select class="selectpicker" data-style="btn select-with-transition" data-size="7"
+                                    title="Выберите страну" name="countryshort">
+                              {{#countries}}
+                                <option value="{{code}}" {{selected}}>{{name}}</option>
+                              {{/countries}}
+                            </select>
+                          </div>
+                          <div class="col-sm-3">
+                            <div class="form-group">
+                              <label class="bmd-label-floating">Город</label>
+                              <input id="contCity" type="text" class="form-control"
+                                     value="{{city}}" name="city">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-sm-12">
+                            <div class="form-group">
+                              <label class="bmd-label-floating">О себе</label>
+                              <input type="text" class="form-control"
+                                     value="{{about}}" name="about">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-sm-10">
+                            <div class="form-group">
+                              <label class="bmd-label-floating">Фото</label>
+                              <input type="text" class="form-control"
+                                     value="{{photo}}" name="photo">
+                            </div>
+                          </div>
+                          <div class="col-sm-2">
+                            <div class="form-group">
+                              <label class="bmd-label-floating">Удален</label>
+                              <input type="text" class="form-control"
+                                     value="{{deleted}}" name="deleted">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="footer justify-content-around">
+                        <button type="button" class="btn btn-secondary btn-round btn-sm" title="Вернуться к просмотру"
+                                onclick="rotateCard(this)">
+                          <i class="fa fa-reply"></i> Вернуться к просмотру
+                        </button>
+                        <a href="/users/delete/{{rowid}}"
+                           class="btn btn-danger btn-round btn-sm"
+                           title="Удалить пользователя. Удален: {{deleted}}">
+                          <i class="fa fa-trash"></i> Удалить пользователя</a>
+                        <button type="submit" class="btn btn-success btn-round btn-sm" title="Сохранить изменения">
+                          <i class="fa fa-save"></i> Сохранить изменения
+                        </button>
+                      </div>
+                    </form>
+                  </div> <!-- end back panel -->
+                </div>
+              </div>
+            </div>
+          </div>
+        {{/usersList}}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Modal Delete -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Удалить все результаты голосования?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Нет, не надо!</button>
+        <button onclick="deleteVoices()" type="button" class="btn btn-secondary">Да удалить</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  function deleteVoices() {
+    window.location.href = '/manage/delvoices?' + Math.random();
+  }
+
+  function deleteCard(id) {
+    $.post(`/manage/nomination/delete/${id}`, function (data, status) {
+      console("deleteCard: " + data + "\nStatus: " + status);
+    });
+  }
+
+  function getTogglevoteStatus(el) {
+    console.log(el.checked);
+    var state = (el && el.checked) ? 1 : 0;
+    window.location.href = `/manage/nomination/setvotestate/${state}`;
+  }
+
+  function getToggleMayChange(el) {
+    console.log(el.checked);
+    var state = (el && el.checked) ? 1 : 0;
+    window.location.href = `/manage/nomination/setmaychange/${state}`;
+  }
+
+  function getToggleMyVoiceVisible(el) {
+    console.log(el.checked);
+    var state = (el && el.checked) ? 1 : 0;
+    window.location.href = `/manage/nomination/myvoicevisible/${state}`;
+  }
+</script>

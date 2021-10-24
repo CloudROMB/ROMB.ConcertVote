@@ -1,0 +1,78 @@
+<div class="sidebar" data-color="azure" data-background-color="black" data-image="/assets/img/sidebar-5.jpg">
+  <!-- change the color of the sidebar using: data-color="purple | azure | green | orange | danger" -->
+  <div class="logo">
+    <a href="/" class="simple-text logo-mini" style="overflow: visible; margin: 0 24px;">
+      <img src="/assets/img/logo/logo_42.png" alt="Junior Eurovision">
+    </a>
+    <a href="/" class="simple-text logo-normal">Jr. Eurovision</a>
+  </div>
+  <div class="sidebar-wrapper">
+    <div class="user">
+      <div class="photo">
+        <img src="/assets/img/faces/avatar.jpg"/>
+      </div>
+      <div class="user-info">
+        <a class="username">
+          <span>
+            {{username}} Жюри Наталья Ветлицкая
+          </span>
+        </a>
+      </div>
+    </div>
+    <ul class="nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/dashboard">
+          <i class="material-icons">timeline</i>
+          <p>Сводные показатели</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/contenders">
+          <i class="material-icons">image</i>
+          <p>Голосование</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/contenders/123">
+          <i class="material-icons">image</i>
+          <p>Карточка участника</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/manage">
+          <i class="material-icons">widgets</i>
+          <p>Управление</p>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+<script>
+  var activeMenu = document.querySelectorAll('li.nav-item');
+  if (activeMenu) {
+    // console.log(document.URL);
+    for (let i = 0; i < activeMenu.length; i++) {
+      let el = activeMenu[i];
+      let aEl = el.querySelector('a.nav-link');
+      if (aEl && aEl.getAttribute('href')) {
+        if (document.URL.indexOf(aEl.getAttribute('href')) > 0) {
+          el.classList.add('active');
+        } else {
+          el.classList.remove('active');
+        }
+      }
+    }
+
+    // ES6 implementation
+    // activeMenu.forEach(el => {
+    //   aEl = el.querySelector('a.nav-link');
+    //   if (aEl && aEl.getAttribute('href')) {
+    //     if (document.URL.indexOf(aEl.getAttribute('href')) > 0) {
+    //       el.classList.add('active');
+    //     } else {
+    //       el.classList.remove('active');
+    //     }
+    //   }
+    // });
+  }
+</script>

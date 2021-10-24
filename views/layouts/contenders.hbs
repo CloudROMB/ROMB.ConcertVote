@@ -1,0 +1,361 @@
+<div class="row">
+  <div class="col-md-5">
+    <div class="card">
+      <div class="card-header card-header-icon card-header-rose">
+        <div class="card-icon">
+          <i class="material-icons">perm_identity</i>
+        </div>
+        <h4 class="card-title">Участники</h4>
+      </div>
+      <div class="card-body contenders-list" style="min-height: 64px;">
+        {{#if isAdmin}}
+          <div class="row">
+            <div class="col-sm-12" style="text-align: center;">
+              <a href="/contenders/add" class="btn btn-success btn-round btn-sm">
+                Добавить участника
+              </a>
+            </div>
+          </div>
+        {{/if}}
+        <ul style="list-style: none; padding: 0;">
+          {{#if isAdmin}}
+            {{#contendersList}}
+              <li>
+                <div class="row">
+                  <div class="col-sm-8">
+                    <a href="javascript:showCard({{rowid}})" id="#contender{{rowid}}"
+                       title="Информация об участнике"
+                      {{#if active}}
+                       class=""
+                      {{else}}
+                       class="disabled-contender"
+                      {{/if}}
+                    >
+                      {{#if voiced}}
+                        <i class="material-icons text-success">check_box</i> {{name}}
+                      {{else}}
+                        <i class="material-icons text-danger">check_box_outline_blank</i> {{name}}
+                      {{/if}}
+                      <span> (оценка {{voiceAverage}})</span>
+                    </a>
+                  </div>
+                  <div class="col-sm-4">
+                    <a href="/contenders/{{rowid}}" title="Редактировать"
+                       class="btn btn-primary btn-round btn-fab btn-sm pull-right">
+                      <i class="material-icons">border_color</i>
+                    </a>
+                  </div>
+                </div>
+              </li>
+            {{/contendersList}}
+          {{else}}
+            {{#contendersList}}
+              <li>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <a href="javascript:showCard({{rowid}})" id="#contender{{rowid}}"
+                       title="{{#each voices}} {{this.voice}}, {{/each}}"
+                      {{#if active}}
+                       class=""
+                      {{else}}
+                       class="disabled-contender"
+                      {{/if}}
+                    >
+                      {{#if voiced}}
+                        <i class="material-icons text-success">check_box</i> {{name}}
+                      {{else}}
+                        <i class="material-icons text-danger">check_box_outline_blank</i> {{name}}
+                      {{/if}}
+                      {{#if myVoiceVisible}}
+                        <span> (оценка {{evaluation}})</span>
+                      {{/if}}
+                    </a>
+                  </div>
+                </div>
+              </li>
+            {{/contendersList}}
+          {{/if}}
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-7">
+    <div class="card card-profile" id="profile" hidden>
+      <div class="card-avatar">
+        <img id="contPhoto" class="img" src="/files/user4-128x128.jpg"/>
+      </div>
+      <div class="card-header">
+      </div>
+
+      <div class="card-body">
+        <h3 id="contName" class="card-title">Nina Mcintire</h3>
+        <h4 id="contAction" class="card-title">Song "Song Song"</h4>
+
+        <form id="contForm" class="form" action="/contenders/vote/0" method="post"
+              enctype="application/x-www-form-urlencoded">
+          <div class="vote-wrapper text-center">
+            <div class="row" style="margin: 0;">
+              <div class="col-sm-12 text-center vote-vocal vote-splitter">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <button type="submit" class="btn btn-primary btn-round">Голосовать</button>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <p class="card-description" style="margin-top: 30px;">
+          <strong class="text-dark">Страна </strong>
+          <span id="contCountry">РФ</span>
+          <span class="flag">
+            <img id="contCountryShort" src="/assets/img/flags/RU.png">
+          </span>
+        </p>
+        <p class="card-description" style="margin-top: 30px;">
+          <strong class="text-dark">Город </strong><span id="contCity">Москва</span>
+        </p>
+        <p class="card-description" style="border-top: solid 1px lightgray;">
+          <strong class="text-dark">Возраст </strong><span id="contAge"> 14</span><span> лет</span>
+        </p>
+
+        <h6 class="card-category text-dark" style="border-top: solid 1px lightgray;">О себе</h6>
+        <p id="contAbout">What about me? I am the best singer of all the world!</p>
+
+        <h6 class="card-category text-dark" style="border-top: solid 1px lightgray;">Образование</h6>
+        <p id="contEducation">B.S. in Computer Science from the University of Tennessee at Knoxville</p>
+
+        <h6 class="card-category text-dark" style="border-top: solid 1px lightgray;">Хобби</h6>
+        <div id="contHobby" class="bootstrap-tagsinput info-badge">
+          <span class="tag badge">Танцы</span>
+          <span class="tag badge">Рисование
+          </span>
+          <span class="tag badge">Велосипед
+          </span>
+        </div>
+
+        {{#if isAdmin}}
+          <div class="row">
+            <div class="col-sm-12 text-center">
+              <a id="contEditButton" href="#" class="btn btn-link btn-danger btn-round">Редактировать</a>
+            </div>
+          </div>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function fillNominations(noms, showVoices) {
+    var blok = '';
+    // console.log('~+++', noms, showVoices);
+    if (!(noms && noms instanceof Array) && noms.length > 0) {
+      return blok;
+    }
+
+    let nom, eval, disabledEval;
+    for (let i = 0; i < noms.length; i++) {
+      nom = noms[i];
+      console.log('nom:', nom, showVoices);
+
+      if (nom.voice > 0 && !showVoices) {
+        continue;
+      }
+
+      blok += `
+            <div class="row">
+              <div class="col-sm-12 text-left text-center ">
+                <h4>${nom.name}</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 text-center vote-vocal vote-btn-group">`;
+
+      if (nom.evals) {
+        for (let e = 0; e < nom.evals.length; e++) {
+          eval = nom.evals[e];
+
+          if (nom.disabledVoices.includes(eval)) {
+            disabledEval = 'disabled';
+            titleEval = 'Вы уже поставили эту оценку другому участнику';
+          } else {
+            disabledEval = '';
+            titleEval = '';
+          }
+
+
+          const checked = (eval === nom.voice) ? 'checked' : '';
+          // console.log('checked', checked, eval);
+          blok += `
+                <div class="form-check form-check-radio form-check-inline" title="${titleEval}">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="radio"
+                      ${checked}
+                      name="radiopt_${nom.rowid}" id="inlineRadio_${nom.rowid}_${eval}"
+                      value="${eval}" ${disabledEval}> ${eval}
+                    <span class="circle">
+                      <span class="check"></span>
+                    </span>
+                  </label>
+                </div>
+          `;
+        }
+      }
+
+      blok += `
+              </div>
+            </div>
+            <div class="row" style="margin: 0;">
+              <div class="col-sm-12 text-center vote-vocal vote-splitter">
+              </div>
+            </div>
+        `;
+    }
+
+    if (blok.length > 0) {
+      blok += `
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <button type="submit" class="btn btn-primary btn-round">Голосовать</button>
+              </div>
+            </div>
+        `;
+    } else {
+      blok = `<p>Вы уже проголосовали за этого участника</p>`
+    }
+    // console.log('+++', blok);
+    return blok;
+  }
+
+  function showCard(id) {
+    // console.log('contender:', id);
+
+    card = document.querySelector('#profile');
+    if (card) {
+      card.setAttribute('hidden', 'hidden');
+      card.parentElement.classList.add("spinner-3");
+    } else {
+      return;
+    }
+
+    setTimeout(() => {
+      $.ajax({
+        type: "POST",
+        url: `/contenders/info/${id}`,
+        success: function (res) {
+          card.removeAttribute('hidden');
+          card.parentElement.classList.remove("spinner-3");
+          // console.log('success', res);
+          if (res && res.result) {
+            // console.log('+++', res.contender);
+            // console.log('+++', res.voteActive);
+            // console.log('---', res);
+            // console.log('---', res);
+
+            $('#contForm').attr('action', `/contenders/vote/${res.contender.rowid}`);
+            if (!res.isAdmin && Number(res.voteActive) === 1) {
+              // console.log('res', res, res.myVoiceVisible);
+              var myVoiceVisible = res.myVoiceVisible;
+              $('#contForm .vote-wrapper').html(fillNominations(res.nominationsList, myVoiceVisible));
+              $('#contForm').show();
+            } else {
+              $('#contForm .vote-wrapper').html('');
+              $('#contForm').hide();
+            }
+
+            $('#contName').text(res.contender.name);
+            $('#contAction').text(res.contender.action);
+            $('#contCountry').text(res.contender.country);
+            $('#contCity').text(res.contender.city);
+            $('#contAge').text(res.contender.contAge);
+            $('#contAbout').text(res.contender.about);
+            $('#contEducation').text(res.contender.education);
+
+            $('#contEditButton').attr('href', `/contenders/${res.contender.rowid}`);
+
+            let hob = '';
+            if (res.contender.hobbyArr && res.contender.hobbyArr.length) {
+              for (let i = 0; i < res.contender.hobbyArr.length; i++) {
+                hob += `<span class="tag badge">${res.contender.hobbyArr[i]}</span>`;
+              }
+            }
+            $('#contHobby').html(hob);
+
+            if (res.contender.countryshort) {
+              $('#contCountryShort').attr('src', `/assets/img/flags/${res.contender.countryshort}.png`);
+            } else {
+              $('#contCountryShort').attr('src', '/assets/img/flags/RU.png');
+            }
+            if (contPhoto) {
+              $('#contPhoto').attr('src', `/files/${res.contender.photo}`);
+            } else {
+              $('#contPhoto').attr('src', '/assets/img/placeholder.jpg');
+            }
+
+
+          } else {
+            showNotification('Ошибка: ' + res.message);
+          }
+        },
+        error: function (res) {
+          card.removeAttribute('hidden');
+          card.parentElement.classList.remove("spinner-3");
+          console.log('error', res);
+          showNotification('Ошибка: ' + res.message);
+        },
+        dataType: "json",
+        contentType: "application/json"
+      });
+    }, 100);
+  }
+
+  document.querySelector(".contenders-list ul").style.display = "none";
+  document.querySelector(".contenders-list").classList.add("spinner-3");
+
+  // Mimic Server Request
+  setTimeout(() => {
+    document.querySelector(".contenders-list").classList.remove("spinner-3");
+    document.querySelector(".contenders-list ul").style.display = "block";
+  }, 100);
+
+  // var voteButtons = document.querySelectorAll(".vote-dance.vote-btn-group button");
+  // for (var i = 0; i < voteButtons.length; i++) {
+  //   voteButtons[i].addEventListener('click', function (event) {
+  //     console.log('Vote dance is', event.target.innerText);
+  //     var par = event.target.parentNode;
+  //     for (var c = 0; c < par.children.length; c++) {
+  //       // console.log(par, par.children);
+  //       if (par.children[c] == event.target) {
+  //         event.target.classList.add('btn-primary');
+  //         event.target.classList.remove('btn-default');
+  //       } else {
+  //         // console.log(par.children[c], c);
+  //         par.children[c].classList.remove('btn-primary');
+  //         par.children[c].classList.add('btn-default');
+  //       }
+  //     }
+  //   });
+  // }
+  //
+  // var voteButtons = document.querySelectorAll(".vote-vocal.vote-btn-group button");
+  // for (var i = 0; i < voteButtons.length; i++) {
+  //   voteButtons[i].addEventListener('click', function (event) {
+  //     console.log('Vote vocal is', event.target.innerText);
+  //     var par = event.target.parentNode;
+  //     for (var c = 0; c < par.children.length; c++) {
+  //       // console.log(par, par.children);
+  //       if (par.children[c] == event.target) {
+  //         event.target.classList.add('btn-primary');
+  //         event.target.classList.remove('btn-default');
+  //       } else {
+  //         // console.log(par.children[c], c);
+  //         par.children[c].classList.remove('btn-primary');
+  //         par.children[c].classList.add('btn-default');
+  //       }
+  //     }
+  //   });
+  // }
+</script>

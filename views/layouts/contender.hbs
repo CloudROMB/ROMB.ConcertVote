@@ -1,0 +1,238 @@
+<div class="contender-card" style="width: 100%; height: 100%;">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header card-header-icon card-header-rose">
+          <div class="card-icon">
+            <i class="material-icons">perm_identity</i>
+          </div>
+          <h4 class="card-title">Профиль участника </h4>
+        </div>
+        <div class="card-body">
+          {{#if contender}}
+            <form id="formContender" class="form" method="post" action="/contenders/update/{{contender.rowid}}"
+                  enctype="multipart/form-data">
+              <!--enctype="application/x-www-form-urlencoded">-->
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">ID</label>
+                    <input id="contRowid" type="text" class="form-control"
+                           value="{{contender.rowid}}" name="rowid" disabled>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input id="contActive" class="form-check-input" type="checkbox"
+                             value="{{contender.active}}" name="active"
+                             {{#if contender.active}}checked{{/if}}>
+                      Активный участник
+                      <span class="form-check-sign">
+                        <span class="check"></span>
+                      </span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Имя претендента</label>
+                    <input id="contName" type="text" class="form-control"
+                           value="{{contender.name}}" name="name">
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Название выступления (номера)</label>
+                    <input id="contAction" type="text" class="form-control"
+                           value="{{contender.action}}" name="action">
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-12" style="text-align: center">
+                  {{#if contender.userphoto}}
+                    <div class="fileinput fileinput-exists text-center" data-provides="fileinput">
+                      <div class="fileinput-new thumbnail img-circle">
+                        <img src="/assets/img/placeholder.jpg" alt="Добавить фото">
+                      </div>
+                      <div class="fileinput-preview fileinput-exists thumbnail img-circle">
+                        <img src="{{contender.userphoto}}" alt="Фото">
+                      </div>
+                      <div>
+                    <span class="btn btn-round btn-rose btn-sm btn-file">
+                      <span class="fileinput-new">Добавить фото</span>
+                      <span class="fileinput-exists">Изменить</span>
+                      <input type="file" id="contPhoto" name="photo"/>
+                    </span>
+                        <br/>
+                        <a class="btn btn-danger btn-round btn-sm fileinput-exists text-white" data-dismiss="fileinput">
+                          <i class="fa fa-times"></i>Удалить
+                        </a>
+                      </div>
+                    </div>
+                  {{else}}
+                    <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+                      <div class="fileinput-new thumbnail img-circle">
+                        <img src="/assets/img/placeholder.jpg" alt="Добавить фото">
+                      </div>
+                      <div class="fileinput-preview fileinput-exists thumbnail img-circle">
+                      </div>
+                      <div>
+                    <span class="btn btn-round btn-rose btn-sm btn-file">
+                      <span class="fileinput-new">Добавить фото</span>
+                      <span class="fileinput-exists">Изменить</span>
+                      <input type="file" id="contPhoto" name="photo"/>
+                    </span>
+                        <br/>
+                        <a class="btn btn-danger btn-round btn-sm fileinput-exists text-white" data-dismiss="fileinput">
+                          <i class="fa fa-times"></i>Удалить
+                        </a>
+                      </div>
+                    </div>
+                  {{/if}}
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Возраст</label>
+                    <input id="contAge" type="number" class="form-control"
+                           value="{{contender.age}}" name="age">
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <select class="selectpicker" data-style="btn select-with-transition" data-size="7"
+                          title="Выберите страну" id="contCountry" name="countryshort">
+                    {{#countries}}
+                      <option value="{{code}}" {{selected}}>{{name}}</option>
+                    {{/countries}}
+                  </select>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Город</label>
+                    <input id="contCity" type="text" class="form-control"
+                           value="{{contender.city}}" name="city">
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="contAbout" class="bmd-label-floating">О себе</label>
+                <textarea class="form-control" rows="5"
+                          id="contAbout" name="about">{{contender.about}}</textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="contEducation" class="bmd-label-floating">Образование</label>
+                <textarea class="form-control" rows="2"
+                          id="contEducation" name="education">{{contender.education}}</textarea>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Хобби — в формате ['Танцы', 'Рисование', 'Велоспорт']</label>
+                    <input id="contHobby" type="text" class="form-control"
+                           value="{{contender.hobby}}" name="hobby">
+                  </div>
+                </div>
+              </div>
+
+              {{#if isAdmin}}
+                <div class="row">
+                  <div class="col-sm-12" style="text-align: center">
+                    <a class="btn btn-link btn-danger pull-left"
+                       data-toggle="modal" data-target="#deleteModal"
+                    >Удалить участника</a>
+                    <button
+                        type="submit" id="btnSubmit"
+                        class="btn btn-link btn-success pull-right">Обновить профиль
+                    </button>
+                  </div>
+                </div>
+              {{/if}}
+            </form>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Delete -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Удалить участника?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Отмена</button>
+        <button id="btnDelete" type="button" class="btn btn-secondary">Да удалить</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function (event) {
+    document.querySelector(".contender-card .row").style.display = "none";
+    document.querySelector(".contender-card").classList.add("spinner-3");
+
+    // Mimic Server Request
+    setTimeout(() => {
+      document.querySelector(".contender-card").classList.remove("spinner-3");
+      document.querySelector(".contender-card .row").style.display = "flex";
+    }, 100);
+
+    if (document.URL.indexOf('/add') > 0) {
+      var btn = document.querySelector("#btnSubmit");
+      if (btn) {
+        btn.innerHTML = 'Добавить участника';
+      }
+    } else {
+      if (btn) {
+        btn.innerHTML = 'Обновить профиль';
+      }
+    }
+
+    const active_ = document.querySelector('#contActive');
+
+    var btnDelete = document.querySelector("#btnDelete");
+    if (btnDelete) {
+      btnDelete.addEventListener('click', function () {
+        window.location.href = `/contenders/delete/{{contender.rowid}}`;
+      });
+    }
+
+    var form = document.querySelector("#formContender");
+    if (form) {
+      form.addEventListener('submit', function (e) {
+        // e.preventDefault();
+
+        active_.value = (active_.checked) ? 1 : 0;
+
+        var formData = $(e.target).serializeArray();
+        var f = {};
+        for (let i = 0; i < formData.length; i++) {
+          console.log('el', formData[i].name, formData[i].value);
+          f[formData[i].name] = formData[i].value;
+        }
+        console.log(f);
+      });
+    }
+  })
+</script>

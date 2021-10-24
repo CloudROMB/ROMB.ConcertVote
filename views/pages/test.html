@@ -1,0 +1,636 @@
+<html
+    class="js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage no-websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients no-cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg no-smil svgclippaths perfect-scrollbar-on"
+    lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <!-- Favicons -->
+  <link href="/assets/img/logo/apple-icon.png" rel="apple-touch-icon">
+  <link href="/assets/img/logo/favicon.png" rel="icon">
+  <title>Child Eurovision</title>
+  <!--     Fonts and icons     -->
+  <link href="/vendors/roboto-fontface/css/roboto-slab/roboto-slab-fontface.css" rel="stylesheet" type="text/css">
+  <link href="/vendors/roboto-fontface/css/roboto/roboto-fontface.css" rel="stylesheet" type="text/css">
+  <link href="/vendors/material-icons/iconfont/material-icons.css" rel="stylesheet" type="text/css">
+  <!--<link rel="stylesheet" type="text/css"-->
+  <!--href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons"/>-->
+  <link href="/vendors/font-awesome/css/font-awesome.css" rel="stylesheet">
+  <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css"/>-->
+  <link href="/assets/css/material-dashboard.css" rel="stylesheet">
+  <!-- Documentation extras -->
+  <!-- CSS Just for demo purpose, don't include it in your project -->
+  <link href="/assets/assets-for-demo/demo.css" rel="stylesheet">
+  <link href="/stylesheets/style.css" rel="stylesheet">
+  <link href="/vendors/rotating-card.css" rel="stylesheet">
+  <!-- iframe removal -->
+</head>
+
+<body>
+<div class="wrapper">
+  <div class="sidebar" data-background-color="black" data-color="azure" data-image="/assets/img/sidebar-5.jpg">
+    <!-- change the color of the sidebar using: data-color="purple | azure | green | orange | danger" -->
+    <div class="logo">
+      <a class="simple-text logo-mini" style="overflow: visible; margin: 0 24px;" href="/">
+        <img alt="Junior Eurovision" src="/assets/img/logo/logo_42.png">
+      </a>
+      <a class="simple-text logo-normal" href="/">Jr. Eurovision</a>
+    </div>
+    <div class="sidebar-wrapper ps-container ps-theme-default" data-ps-id="2ea5841f-dc3d-3e98-a68e-9b1bac1b9502">
+      <div class="user">
+        <div class="photo">
+          <!--<img src="/assets/img/faces/avatar.jpg"/>-->
+          <img src="">
+        </div>
+        <div class="user-info">
+          <a class="username">
+              <span>
+                Антон Чеханте
+              </span>
+          </a>
+        </div>
+      </div>
+      <ul class="nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/dashboard">
+            <i class="material-icons">timeline</i>
+            <p>Сводные показатели</p>
+          </a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="/contenders">
+            <i class="material-icons">image</i>
+            <p>Голосование</p>
+          </a>
+        </li>
+      </ul>
+      <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
+        <div tabindex="0" class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div>
+      </div>
+      <div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;">
+        <div tabindex="0" class="ps-scrollbar-y" style="top: 0px; height: 0px;"></div>
+      </div>
+    </div>
+    <div class="sidebar-background" style="background-image: url(/assets/img/sidebar-5.jpg) "></div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var activeMenu = document.querySelectorAll('li.nav-item');
+      if (activeMenu) {
+        // console.log(document.URL);
+        for (let i = 0; i < activeMenu.length; i++) {
+          let el = activeMenu[i];
+          let aEl = el.querySelector('a.nav-link');
+          if (aEl && aEl.getAttribute('href')) {
+            if (document.URL.indexOf(aEl.getAttribute('href')) > 0) {
+              el.classList.add('active');
+            } else {
+              el.classList.remove('active');
+            }
+          }
+        }
+
+        // ES6 implementation
+        // activeMenu.forEach(el => {
+        //   aEl = el.querySelector('a.nav-link');
+        //   if (aEl && aEl.getAttribute('href')) {
+        //     if (document.URL.indexOf(aEl.getAttribute('href')) > 0) {
+        //       el.classList.add('active');
+        //     } else {
+        //       el.classList.remove('active');
+        //     }
+        //   }
+        // });
+      }
+    });
+  </script>
+  <div class="main-panel ps-container ps-theme-default ps-active-y" data-ps-id="f52be2d4-67f0-d9da-5fe0-2bb6112cab7c">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-wrapper">
+          <div class="navbar-minimize">
+            <button class="btn btn-just-icon btn-white btn-fab btn-round" id="minimizeSidebar">
+              <i class="material-icons text_align-center visible-on-sidebar-regular">more_vert</i>
+              <i class="material-icons design_bullet-list-67 visible-on-sidebar-mini">view_list</i>
+            </button>
+          </div>
+          <a class="navbar-brand" href="/">Голосование</a>
+        </div>
+        <button class="navbar-toggler" aria-expanded="false" aria-controls="navigation-index"
+                aria-label="Toggle navigation" type="button" data-target="#navigation" data-toggle="collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="navbar-toggler-icon icon-bar"></span>
+          <span class="navbar-toggler-icon icon-bar"></span>
+          <span class="navbar-toggler-icon icon-bar"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end">
+          <!--<form class="navbar-form">-->
+          <!--<div class="input-group no-border">-->
+          <!--<input type="text" value="" class="form-control" placeholder="Search...">-->
+          <!--<button type="submit" class="btn btn-white btn-round btn-just-icon">-->
+          <!--<i class="material-icons">search</i>-->
+          <!--<div class="ripple-container"></div>-->
+          <!--</button>-->
+          <!--</div>-->
+          <!--</form>-->
+          <ul class="navbar-nav">
+            <!--<li class="nav-item">-->
+            <!--<a class="nav-link" href="#pablo">-->
+            <!--<i class="material-icons">dashboard</i>-->
+            <!--<p>-->
+            <!--<span class="d-lg-none d-md-block">Stats</span>-->
+            <!--</p>-->
+            <!--</a>-->
+            <!--</li>-->
+            <!--<li class="nav-item dropdown">-->
+            <!--<a class="nav-link" href="#pablo" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"-->
+            <!--aria-expanded="false">-->
+            <!--<i class="material-icons">notifications</i>-->
+            <!--<span class="notification">5</span>-->
+            <!--<p>-->
+            <!--<span class="d-lg-none d-md-block">Some Actions-->
+            <!--<b class="caret"></b>-->
+            <!--</span>-->
+
+            <!--</p>-->
+            <!--</a>-->
+            <!--<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">-->
+            <!--<a class="dropdown-item" href="#pablo">Mike John responded to your email</a>-->
+            <!--<a class="dropdown-item" href="#pablo">You have 5 new tasks</a>-->
+            <!--<a class="dropdown-item" href="#pablo">You're now friend with Andrew</a>-->
+            <!--<a class="dropdown-item" href="#pablo">Another Notification</a>-->
+            <!--<a class="dropdown-item" href="#pablo">Another One</a>-->
+            <!--</div>-->
+            <!--</li>-->
+            <li class="nav-item">
+              <a title="" class="nav-link" id="exitButton" style="cursor: pointer;" rel="tooltip"
+                 data-original-title="Выйти" data-placement="bottom">
+                <i class="material-icons">exit_to_app</i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- End Navbar -->
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        document.querySelector('#exitButton').addEventListener('click', function () {
+          logout();
+        });
+      });
+
+      function logout() {
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
+
+        eraseCookie('user');
+        eraseCookie('token');
+
+        setTimeout(function () {
+          window.location.href = '/';
+        }, 500);
+      }
+
+      function setCookie(name, value, days) {
+        var expires = "";
+        if (days) {
+          var date = new Date();
+          date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+          expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + (value || "") + expires + "; path=/";
+      }
+
+      function getCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+          var c = ca[i];
+          while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+          if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+      }
+
+      function eraseCookie(name) {
+        document.cookie = name + '=; Max-Age=-99999999;';
+      }
+    </script>
+    <div class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-5">
+            <div class="card">
+              <div class="card-header card-header-icon card-header-rose">
+                <div class="card-icon">
+                  <i class="material-icons">perm_identity</i>
+                </div>
+                <h4 class="card-title">Участники</h4>
+              </div>
+              <div class="card-body contenders-list" style="min-height: 64px;">
+                <ul style="list-style: none; padding: 0px; display: block;">
+                  <li>
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <a id="#contender3" href="/contenders/3">
+                          <i class="material-icons text-success">check_box</i> asdasd
+                          <!--<i class="material-icons text-success">check_box_outline_blank </i> asdasd-->
+                        </a>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <a id="#contender2" href="/contenders/2">
+                          <i class="material-icons text-success">check_box</i> Марина Цветаева
+                          <!--<i class="material-icons text-success">check_box_outline_blank </i> Марина Цветаева-->
+                        </a>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <a id="#contender1" href="/contenders/1">
+                          <i class="material-icons text-success">check_box</i> Саша Белый
+                          <!--<i class="material-icons text-success">check_box_outline_blank </i> Саша Белый-->
+                        </a>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-7">
+            <div class="card card-profile" id="profile" hidden="">
+              <div class="card-avatar">
+                <img class="img" id="contPhoto" src="/files/user4-128x128.jpg">
+              </div>
+              <div class="card-header">
+              </div>
+
+              <div class="card-body">
+                <h3 class="card-title" id="contName">Nina Mcintire</h3>
+                <h4 class="card-title" id="contAction">Song "Song Song"</h4>
+
+                <form class="form" id="contForm" action="/contenders/vote/0" enctype="application/x-www-form-urlencoded"
+                      method="post">
+                  <div class="vote-wrapper">
+                    <div class="row" style="margin: 0;">
+                      <div class="col-sm-12 text-center vote-vocal vote-splitter">
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-sm-12 text-center">
+                        <button class="btn btn-primary btn-round" type="submit">Голосовать</button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+
+                <p class="card-description" style="margin-top: 30px;">
+                  <strong class="text-dark">Страна </strong>
+                  <span id="contCountry">РФ</span>
+                  <span class="flag">
+            <img id="contCountryShort" src="/assets/img/flags/RU.png">
+          </span>
+                </p>
+                <p class="card-description" style="margin-top: 30px;">
+                  <strong class="text-dark">Город </strong><span id="contCity">Москва</span>
+                </p>
+                <p class="card-description" style="border-top: solid 1px lightgray;">
+                  <strong class="text-dark">Возраст </strong><span id="contAge"> 14</span><span> лет</span>
+                </p>
+
+                <h6 class="card-category text-dark" style="border-top: solid 1px lightgray;">О себе</h6>
+                <p id="contAbout">What about me? I am the best singer of all the world!</p>
+
+                <h6 class="card-category text-dark" style="border-top: solid 1px lightgray;">Образование</h6>
+                <p id="contEducation">B.S. in Computer Science from the University of Tennessee at Knoxville</p>
+
+                <h6 class="card-category text-dark" style="border-top: solid 1px lightgray;">Хобби</h6>
+                <div class="bootstrap-tagsinput info-badge undefined-badge" id="contHobby">
+                  <span class="tag badge">Танцы</span>
+                  <span class="tag badge">Рисование
+          </span>
+                  <span class="tag badge">Велосипед
+          </span>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <script>
+          function fillNominations(noms) {
+            var blok = '';
+            console.log('+++', noms);
+            if (!(noms && noms instanceof Array)) {
+              return blok;
+            }
+
+            noms.forEach((nom, i, arr) => {
+              blok += `
+            <div class="row">
+              <div class="col-sm-12 text-left text-center ">
+                <h4>${nom.name}</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 text-center vote-vocal vote-btn-group">`;
+
+              nom.evals.forEach(eval => {
+                blok += `
+                <div class="form-check form-check-radio form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="radio"
+                           name="radiopt_${nom.rowid}" id="inlineRadio_${nom.rowid}_${eval}"
+                           value="${eval}"> ${eval}
+                    <span class="circle">
+                      <span class="check"></span>
+                    </span>
+                  </label>
+                </div>
+          `;
+              });
+
+              blok += `
+              </div>
+            </div>
+            <div class="row" style="margin: 0;">
+              <div class="col-sm-12 text-center vote-vocal vote-splitter">
+              </div>
+            </div>
+        `;
+            });
+
+            blok += `
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <button type="submit" class="btn btn-primary btn-round">Голосовать</button>
+              </div>
+            </div>
+        `;
+            // console.log('+++', blok);
+            return blok;
+          }
+
+          function showCard(id) {
+            // console.log('contender:', id);
+
+            card = document.querySelector('#profile');
+            if (card) {
+              card.setAttribute('hidden', 'hidden');
+              card.parentElement.classList.add("spinner-3");
+            } else {
+              return;
+            }
+
+            setTimeout(() => {
+              $.ajax({
+                type: "POST",
+                url: `/contenders/info/${id}`,
+                success: function (res) {
+                  card.removeAttribute('hidden');
+                  card.parentElement.classList.remove("spinner-3");
+                  console.log('succ', res);
+                  if (res && res.result) {
+                    console.log('+++', res.contender);
+
+                    $('#contForm').attr('action', `/contenders/vote/${res.contender.rowid}`);
+                    $('#contForm .vote-wrapper').html(fillNominations(res.nominationsList));
+
+                    $('#contName').text(res.contender.name);
+                    $('#contAction').text(res.contender.action);
+                    $('#contCountry').text(res.contender.country);
+                    $('#contCity').text(res.contender.city);
+                    $('#contAge').text(res.contender.contAge);
+                    $('#contAbout').text(res.contender.about);
+                    $('#contEducation').text(res.contender.education);
+
+                    $('#contEditButton').attr('href', `/contenders/${res.contender.rowid}`);
+
+                    let hob = '';
+                    if (res.contender.hobbyArr && res.contender.hobbyArr.length) {
+                      for (let i = 0; i < res.contender.hobbyArr.length; i++) {
+                        hob += `<span class="tag badge">${res.contender.hobbyArr[i]}</span>`;
+                      }
+                    }
+                    $('#contHobby').html(hob);
+
+                    if (res.contender.countryshort) {
+                      $('#contCountryShort').attr('src', `/assets/img/flags/${res.contender.countryshort}.png`);
+                    } else {
+                      $('#contCountryShort').attr('src', '/assets/img/flags/RU.png');
+                    }
+                    if (contPhoto) {
+                      $('#contPhoto').attr('src', `/files/${res.contender.photo}`);
+                    } else {
+                      $('#contPhoto').attr('src', '/assets/img/placeholder.jpg');
+                    }
+
+
+                  } else {
+                    showNotification('Ошибка: ' + res.message);
+                  }
+                },
+                error: function (res) {
+                  card.removeAttribute('hidden');
+                  card.parentElement.classList.remove("spinner-3");
+                  console.log('error', res);
+                  showNotification('Ошибка: ' + res.message);
+                },
+                dataType: "json",
+                contentType: "application/json"
+              });
+            }, 100);
+          }
+
+          document.querySelector(".contenders-list ul").style.display = "none";
+          document.querySelector(".contenders-list").classList.add("spinner-3");
+
+          // Mimic Server Request
+          setTimeout(() => {
+            document.querySelector(".contenders-list").classList.remove("spinner-3");
+            document.querySelector(".contenders-list ul").style.display = "block";
+          }, 100);
+
+          // var voteButtons = document.querySelectorAll(".vote-dance.vote-btn-group button");
+          // for (var i = 0; i < voteButtons.length; i++) {
+          //   voteButtons[i].addEventListener('click', function (event) {
+          //     console.log('Vote dance is', event.target.innerText);
+          //     var par = event.target.parentNode;
+          //     for (var c = 0; c < par.children.length; c++) {
+          //       // console.log(par, par.children);
+          //       if (par.children[c] == event.target) {
+          //         event.target.classList.add('btn-primary');
+          //         event.target.classList.remove('btn-default');
+          //       } else {
+          //         // console.log(par.children[c], c);
+          //         par.children[c].classList.remove('btn-primary');
+          //         par.children[c].classList.add('btn-default');
+          //       }
+          //     }
+          //   });
+          // }
+          //
+          // var voteButtons = document.querySelectorAll(".vote-vocal.vote-btn-group button");
+          // for (var i = 0; i < voteButtons.length; i++) {
+          //   voteButtons[i].addEventListener('click', function (event) {
+          //     console.log('Vote vocal is', event.target.innerText);
+          //     var par = event.target.parentNode;
+          //     for (var c = 0; c < par.children.length; c++) {
+          //       // console.log(par, par.children);
+          //       if (par.children[c] == event.target) {
+          //         event.target.classList.add('btn-primary');
+          //         event.target.classList.remove('btn-default');
+          //       } else {
+          //         // console.log(par.children[c], c);
+          //         par.children[c].classList.remove('btn-primary');
+          //         par.children[c].classList.add('btn-default');
+          //       }
+          //     }
+          //   });
+          // }
+        </script>
+      </div>
+    </div>
+    <footer class="footer">
+      <div class="container">
+        <nav class="pull-left">
+          <!--<ul>-->
+          <!--<li>-->
+          <!--<a href="https://www.creative-tim.com">-->
+          <!--Creative Tim-->
+          <!--</a>-->
+          <!--</li>-->
+          <!--<li>-->
+          <!--<a href="http://presentation.creative-tim.com">-->
+          <!--About Us-->
+          <!--</a>-->
+          <!--</li>-->
+          <!--<li>-->
+          <!--<a href="http://blog.creative-tim.com">-->
+          <!--Blog-->
+          <!--</a>-->
+          <!--</li>-->
+          <!--<li>-->
+          <!--<a href="https://www.creative-tim.com/license">-->
+          <!--Licenses-->
+          <!--</a>-->
+          <!--</li>-->
+          <!--</ul>-->
+        </nav>
+        <div class="copyright pull-right">
+          ©
+          <script>
+            document.write(new Date().getFullYear())
+          </script>
+          2018
+          , made with <i class="material-icons">favorite</i> by
+          <a href="https://valentov.ru" target="_blank">Pavel Valentov</a> for a better life.
+        </div>
+      </div>
+    </footer>
+    <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
+      <div tabindex="0" class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div>
+    </div>
+    <div class="ps-scrollbar-y-rail" style="top: 0px; height: 779px; right: 0px;">
+      <div tabindex="0" class="ps-scrollbar-y" style="top: 0px; height: 778px;"></div>
+    </div>
+  </div>
+</div>
+
+
+<script src="/assets/js/core/jquery.min.js"></script>
+<script src="/assets/js/core/popper.min.js"></script>
+<script src="/assets/js/bootstrap-material-design.js"></script>
+<script src="/assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+<!--  Plugin for Date Time Picker and Full Calendar Plugin  -->
+<script src="/assets/js/plugins/moment.min.js"></script>
+<!--	Plugin for the Datepicker, full documentation here: https://github.com/Eonasdan/bootstrap-datetimepicker -->
+<script src="/assets/js/plugins/bootstrap-datetimepicker.min.js"></script>
+<!--	Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
+<script src="/assets/js/plugins/nouislider.min.js"></script>
+<!--	Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select -->
+<script src="/assets/js/plugins/bootstrap-selectpicker.js"></script>
+<!--	Plugin for Tags, full documentation here: http://xoxco.com/projects/code/tagsinput/  -->
+<script src="/assets/js/plugins/bootstrap-tagsinput.js"></script>
+<!--	Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput -->
+<script src="/assets/js/plugins/jasny-bootstrap.min.js"></script>
+<!-- Plugins for presentation and navigation  -->
+<script src="/assets/assets-for-demo/js/modernizr.js"></script>
+<!-- Material Dashboard Core initialisations of plugins and Bootstrap Material Design Library -->
+<script src="/assets/js/material-dashboard.js?v=2.0.1"></script>
+<!-- Dashboard scripts -->
+<!-- Include a polyfill for ES6 Promises (optional) for IE11, UC Browser and Android browser support SweetAlert -->
+<script src="/assets/js/plugins/core.js"></script>
+<!-- Library for adding dinamically elements -->
+<script src="/assets/js/plugins/arrive.min.js" type="text/javascript"></script>
+<!-- Forms Validations Plugin -->
+<script src="/assets/js/plugins/jquery.validate.min.js"></script>
+<!--  Charts Plugin, full documentation here: https://gionkunz.github.io/chartist-js/ -->
+<script src="/assets/js/plugins/chartist.min.js"></script>
+<!--  Plugin for the Wizard, full documentation here: https://github.com/VinceG/twitter-bootstrap-wizard -->
+<script src="/assets/js/plugins/jquery.bootstrap-wizard.js"></script>
+<!--  Notifications Plugin, full documentation here: http://bootstrap-notify.remabledesigns.com/    -->
+<script src="/assets/js/plugins/bootstrap-notify.js"></script>
+<!-- Vector Map plugin, full documentation here: http://jvectormap.com/documentation/ -->
+<script src="/assets/js/plugins/jquery-jvectormap.js"></script>
+<!-- Sliders Plugin, full documentation here: https://refreshless.com/nouislider/ -->
+<script src="/assets/js/plugins/nouislider.min.js"></script>
+<!--  Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select -->
+<script src="/assets/js/plugins/jquery.select-bootstrap.js"></script>
+<!--  DataTables.net Plugin, full documentation here: https://datatables.net/    -->
+<script src="/assets/js/plugins/jquery.datatables.js"></script>
+<!-- Sweet Alert 2 plugin, full documentation here: https://limonte.github.io/sweetalert2/ -->
+<script src="/assets/js/plugins/sweetalert2.js"></script>
+<!-- Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput -->
+<script src="/assets/js/plugins/jasny-bootstrap.min.js"></script>
+<!--  Full Calendar Plugin, full documentation here: https://github.com/fullcalendar/fullcalendar    -->
+<script src="/assets/js/plugins/fullcalendar.min.js"></script>
+<!-- demo init -->
+<script src="/assets/js/plugins/demo.js"></script>
+
+<script>
+  $().ready(function () {
+    // $('[rel="tooltip"]').tooltip();
+  });
+
+  function rotateCard(btn) {
+    var $card = $(btn).closest('.card-container');
+    // console.log($card);
+    if ($card.hasClass('hover')) {
+      $card.removeClass('hover');
+    } else {
+      $card.addClass('hover');
+    }
+  }
+
+  function showNotification(message, type) {
+    var types = ['', 'info', 'success', 'warning', 'danger', 'rose', 'primary'];
+    var from = 'bottom';
+    var align = 'left';
+
+    $.notify({
+      icon: "notifications",
+      message: message
+    }, {
+      type: type || 'danger',
+      timer: 3000,
+      placement: {
+        from: from,
+        align: align
+      }
+    });
+  }
+</script>
+
+</body><!--   Core JS Files   -->
+</html>
